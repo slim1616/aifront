@@ -4,7 +4,9 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import VueRouter from 'vue-router';
-   
+import AudioRecorder from 'vue-audio-recorder'
+ 
+Vue.use(AudioRecorder)
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter);
 Vue.config.productionTip = false
@@ -12,7 +14,10 @@ Vue.config.productionTip = false
 import HomeComponent from './components/HomeComponent.vue';
 import tts from './components/tts'
 import visualRecognition from './components/visualrecognition'
-
+import langageTranslate from './components/LangageTranslate'
+import NaturalLangageUnderstand from './components/NaturalLangageUnderstand'
+import toneAnalyzer from './components/toneAnalyser'
+import speechToText from './components/sppechtotext'
 const routes = [
   {
       name: 'home',
@@ -28,7 +33,27 @@ const routes = [
       name: 'visualrecognition',
       path: '/vr',
       component: visualRecognition
-  }
+  },
+  {
+      name :'langagetranslate',
+      path :'/langagetranslate',
+      component : langageTranslate
+  },
+  {
+    name :'NaturalLangageUnderstand',
+    path :'/nlu',
+    component : NaturalLangageUnderstand
+    },
+    {
+    name :'toneAnalyser',
+    path :'/tonea',
+    component : toneAnalyzer
+    },
+    {
+    name :'speechToText',
+    path :'/speech',
+    component : speechToText
+    }
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});

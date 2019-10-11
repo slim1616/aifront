@@ -6,10 +6,22 @@
           <router-link to="/" class="nav-link">Home</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/tts" class="nav-link">Text to speech</router-link>
+          <router-link to="/tts" class="nav-link">TTS</router-link>
         </li>
         <li class="nav-item">
           <router-link to="/vr" class="nav-link">Visual Recognition</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/langagetranslate" class="nav-link">Langage Translate</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/nlu" class="nav-link">NLU</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/tonea" class="nav-link">Tone Analyser</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/speech" class="nav-link">STT</router-link>
         </li>
       </ul>
     </nav><br />
