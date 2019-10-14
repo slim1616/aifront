@@ -5,7 +5,9 @@ import VueAxios from 'vue-axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import VueRouter from 'vue-router';
 import AudioRecorder from 'vue-audio-recorder'
- 
+require('whatwg-fetch');
+require('jquery');
+
 Vue.use(AudioRecorder)
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter);
@@ -17,7 +19,7 @@ import visualRecognition from './components/visualrecognition'
 import langageTranslate from './components/LangageTranslate'
 import NaturalLangageUnderstand from './components/NaturalLangageUnderstand'
 import toneAnalyzer from './components/toneAnalyser'
-import speechToText from './components/sppechtotext'
+import speechToText from './components/speechtotext'
 const routes = [
   {
       name: 'home',
