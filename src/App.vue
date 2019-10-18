@@ -1,47 +1,51 @@
 <template>
-  <div class="container">
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <router-link to="/" class="nav-link">Home</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/tts" class="nav-link">TTS</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/vr" class="nav-link">Visual Recognition</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/langagetranslate" class="nav-link">Langage Translate</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/nlu" class="nav-link">NLU</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/tonea" class="nav-link">Tone Analyser</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/speech" class="nav-link">STT</router-link>
-        </li>
-      </ul>
-    </nav><br />
+  <div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+          <img src="/logo.jpg" class="img-responsive logo">
+        </div>
+        <div class="col-sm-7">
+            <p class="title">Sintegra Labs <span class="watson">IBM WATSON</span>
+            </p>
+        </div>
+        <div class="col-sm-2">
+          <img src="/ibm_watson.png" alt="" class="img-responsive logo">
+        </div>
+    </div>
     <transition name="fade">
       <router-view></router-view>
     </transition>
   </div>
 </template>
 
-<style>
-    .fade-enter-active, .fade-leave-active {
-      transition: opacity .5s ease-in;
-    }
-    .fade-enter, .fade-leave-active {
-      opacity: 0
-    }
-</style>
+
 
 <script>
 
     export default{
     }
 </script>
+
+
+<style>
+body{
+  font-size: 14px !important;
+}
+.logo{
+    max-width: 65px;
+    padding: 5px;
+}
+.title{
+  color:#438bfb;
+  font-size: 2em;
+  margin: 10px 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+.watson{
+  color:#b28efd;
+  font-size: 25px;
+  font-weight: 600;
+  font-style: italic;
+}
+</style>

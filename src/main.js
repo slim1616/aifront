@@ -5,9 +5,12 @@ import VueAxios from 'vue-axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import VueRouter from 'vue-router';
 import AudioRecorder from 'vue-audio-recorder'
+import BootstrapVue from 'bootstrap-vue'
+
 require('whatwg-fetch');
 require('jquery');
 
+Vue.use(BootstrapVue)
 Vue.use(AudioRecorder)
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter);
