@@ -139,8 +139,8 @@
                     </div>
                     
                     <div class="col-sm-6 border">
-                        <div  v-if="insights!=null" class="personnality-div">Personality Insight (Big 5)</div>
-                         <span v-if="insights!=null" class="nbwords" :style="nbWordStyle">{{word_count}} mots</span>
+                        <div  v-if="insights!='' && Pierror!=''" class="personnality-div">Personality Insight (Big 5)</div>
+                         <span v-if="insights!='' && Pierror!=''" class="nbwords" :style="nbWordStyle">{{word_count}} mots</span>
                          <span v-if="Pierror!=''" class="d-block error-pi">{{Pierror}}</span>
                             
                             <div v-if="insights!=null" style="margin-top:15px">
