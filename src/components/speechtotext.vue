@@ -378,7 +378,7 @@ export default {
                         var ch = JSON.stringify(json)
                         var ch1 = ch.replace(/"percentile"/g,"\"size\"")
                         var obj = JSON.parse(ch1)
-                        this.insights = { "name" : "test", "children": obj}
+                        this.insights = { "name" : "P Insight", "children": obj}
                         // console.log(this.insights)
                         this.tache += 'Personnality Insight Completed \n'
                     }else{
