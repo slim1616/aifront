@@ -29,7 +29,7 @@
 
                     </div>
                 <audio-recorder :src="audio"
-                    upload-url="http://localhost:8088/stt"
+                    upload-url="http://pinsights-slim.eu-gb.mybluemix.net/stt"
                     filename="minip"
                     format="wav"
                     :before-recording="callbefore"
@@ -139,11 +139,11 @@
                     </div>
                     
                     <div class="col-sm-6 border">
-                        
-                         <span class="nbwords">{{word_count}} mots</span>
+                        <div  v-if="insights!=null" class="personnality-div">Personality Insight (Big 5)</div>
+                         <span v-if="insights!=null" class="nbwords" :style="nbWordStyle">{{word_count}} mots</span>
                          <span v-if="Pierror!=''" class="d-block error-pi">{{Pierror}}</span>
                             
-                            <div v-if="insights!=null">
+                            <div v-if="insights!=null" style="margin-top:15px">
                                 <sunburst :data="insights">
                                         <!-- Add behaviors -->
                                         <template slot-scope="{ on, actions }">
@@ -229,7 +229,7 @@ export default {
             this.tache = ''
             this.Pierror = ''
             this.tache += 'Analyse Voice... \n'
-            this.axios.post('http://localhost:8088/stt',
+            this.axios.post('http://pinsights-slim.eu-gb.mybluemix.net/stt',
                     formData,
                     {
                     headers: {
@@ -291,7 +291,7 @@ export default {
       getListVoices: async function(){
           this.tache += 'get voices languages... \n'
               this.loading = true
-              let res = await fetch('http://localhost:8088/getvoices')
+              let res = await fetch('http://pinsights-slim.eu-gb.mybluemix.net/getvoices')
               .then(resp => resp.json())
               .then(data => {
                   this.voicesLang = data.voices
@@ -309,7 +309,7 @@ export default {
               if (this.text!=""){
                   this.loading = true
                   console.log(this.text)
-                    let res = await fetch('http://localhost:8088/synthesize',{
+                    let res = await fetch('http://pinsights-slim.eu-gb.mybluemix.net/synthesize',{
                         method : 'post',
                         body : JSON.stringify( {
                             text : this.translationText,
@@ -321,7 +321,7 @@ export default {
                     })
                     .then(resp => resp.json())
                     .then(data => {
-                        this.audio = 'http://localhost:8088/waves/'+data.filename
+                        this.audio = 'http://pinsights-slim.eu-gb.mybluemix.net/waves/'+data.filename
                         window.open(this.audio,'_blank');
                         this.loading = false
                         this.$refs.player.load()
@@ -339,7 +339,7 @@ export default {
           },
       traduire : async function(){
           this.tache += 'Translation in progress \n'
-      let resp = await fetch('http://localhost:8088/lt',{
+      let resp = await fetch('http://pinsights-slim.eu-gb.mybluemix.net/lt',{
                   method : 'post',
                   body : JSON.stringify( {
                       source : this.source,
@@ -361,7 +361,7 @@ export default {
 
         Pinsights : async function(){
             this.tache += 'Personnality Insight Analysing... \n'
-            let resp = await fetch('http://localhost:8088/pi',{
+            let resp = await fetch('http://pinsights-slim.eu-gb.mybluemix.net/pi',{
                     method : 'post',
                     body : JSON.stringify( {
                         source : this.source
@@ -395,7 +395,7 @@ export default {
         },
          nluAnaluyse: async function(){
              this.tache += 'NLU in progress \n'
-            let resp = await fetch('http://localhost:8088/nlu',{
+            let resp = await fetch('http://pinsights-slim.eu-gb.mybluemix.net/nlu',{
                     method : 'post',
                     body : JSON.stringify( {
                         source : this.source
@@ -413,7 +413,7 @@ export default {
         },
         analyser: async function(){
             this.tache += 'Analysing Tones \n'
-            let resp = await fetch('http://localhost:8088/toneanalyzer',{
+            let resp = await fetch('http://pinsights-slim.eu-gb.mybluemix.net/toneanalyzer',{
                         method : 'post',
                         body : JSON.stringify( {
                             source : this.source
@@ -450,7 +450,19 @@ export default {
         }
     },
     computed : {
-       
+       nbWordStyle (){
+            if (this.word_count==0){
+                return {background : '#b28efd'}
+            }else if (this.word_count<100){
+                return {background : '#dc3545'}
+            }else if (this.word_count<600){
+                return {background : '#ffc107'}
+            }else if (this.word_count<1200){
+                return {background : '#17a2b8'}
+            }else{
+                return {background : '#28a745'} 
+            }
+       },
       source : function(){
         var s = this.alternatives.alternatives.map(x => x['transcript'])
         return s.toString()
@@ -559,8 +571,9 @@ svg {
     border: solid 1px #eee;
 }
 .nbwords{
-    background: #eee;
-    padding: 5px 10px;
+    background: #ebe3fd;
+    color: #fff;
+    padding: 10px 10px;
     top: 0;
     right: 0;
     position: absolute;
@@ -601,6 +614,7 @@ svg {
     padding: 5px 20px;
 }
 .nlu-contents{
+    height: 41px;
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -609,7 +623,7 @@ svg {
     margin: 0px -15px;
 }
 .sentiments{
-    padding: 5px 10px;
+    padding:10px 10px;
     color: #FFF;
     margin-right: 2px;
 }
@@ -648,6 +662,15 @@ svg {
 }
 .ar-content{
     padding: 5px !important;
+}
+.personnality-div{
+    background: #b28efd;
+    margin: 0px -15px 0 -15px;
+    padding: 8px;
+    color: #FFF;
+    font-size: 1.2em;
+    font-weight: 700;
+    text-align: center;
 }
  @keyframes pulse
     {

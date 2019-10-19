@@ -2,14 +2,14 @@
   <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3">
-          <img src="/logo.jpg" class="img-responsive logo">
+          <img src="logo.jpg" class="img-responsive logo">
         </div>
         <div class="col-sm-7">
             <p class="title">Sintegra Labs <span class="watson">IBM WATSON</span>
             </p>
         </div>
         <div class="col-sm-2">
-          <img src="/ibm_watson.png" alt="" class="img-responsive logo">
+          <img src="ibm_watson.png" alt="" class="img-responsive logo">
         </div>
     </div>
     <transition name="fade">
