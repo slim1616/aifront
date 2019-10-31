@@ -29,7 +29,7 @@
 
                     </div>
                 <audio-recorder :src="audio"
-                    upload-url="http://pinsights-slim.eu-gb.mybluemix.net/stt"
+                    upload-url="http://localhost:8088/stt"
                     filename="minip"
                     format="wav"
                     :before-recording="callbefore"
@@ -84,7 +84,7 @@
                <div class="emotion">
                    <div v-if="emotions" class="emotions-div">Emotions</div>
                     <div v-if="emotions">
-                        <div v-for="emotion in emotions" class="progress">
+                        <div v-for="emotion in sortedEmotions" class="progress">
                             <div  class="progress-bar" :style="'width:'+ emotion.score*100 +'% ;background :' + emotion.color">
                                 <span> {{emotion.emotion}} ({{(emotion.score*100).toFixed(2)}}%)</span>
                             </div>
@@ -114,11 +114,18 @@
                                     <li class="li-1 list-group-item justify-content-between align-items-center">
                                             Entities
                                         </li>
+                                        <template>
                                         <li v-for="entitie in nlu.entities"class="list-group-item d-flex justify-content-between align-items-center">
                                             {{entitie.text}} ({{entitie.type}})
                                             <span class="badge badge-primary badge-pill">{{entitie.relevance}}</span>
                                         </li>
-                                    
+                                        </template>
+
+                                        <template v-if="nlu.entities.length==0">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Pas de reponse
+                                        </li>
+                                        </template>
                                 </ul>
 
                             </div>
@@ -132,6 +139,12 @@
                                         {{cat.text}}
                                         <span class="badge badge-primary badge-pill">{{cat.relevance}}</span>
                                     </li>
+
+                                     <template v-if="nlu.concepts.length==0">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Pas de reponse
+                                        </li>
+                                        </template>
                                 </ul>
                     
                             </div>
@@ -139,7 +152,7 @@
                     </div>
                     
                     <div class="col-sm-6 border">
-                        <div  v-if="insights!='' && Pierror!=''" class="personnality-div">Personality Insight (Big 5)</div>
+                        <div v-if="Pierror!=''" class="personnality-div">Personality Insight (Big 5)</div>
                          <span v-if="insights!='' && Pierror!=''" class="nbwords" :style="nbWordStyle">{{word_count}} mots</span>
                          <span v-if="Pierror!=''" class="d-block error-pi">{{Pierror}}</span>
                             
@@ -229,7 +242,7 @@ export default {
             this.tache = ''
             this.Pierror = ''
             this.tache += 'Analyse Voice... \n'
-            this.axios.post('http://pinsights-slim.eu-gb.mybluemix.net/stt',
+            this.axios.post('http://localhost:8088/stt',
                     formData,
                     {
                     headers: {
@@ -291,7 +304,7 @@ export default {
       getListVoices: async function(){
           this.tache += 'get voices languages... \n'
               this.loading = true
-              let res = await fetch('http://pinsights-slim.eu-gb.mybluemix.net/getvoices')
+              let res = await fetch('http://localhost:8088/getvoices')
               .then(resp => resp.json())
               .then(data => {
                   this.voicesLang = data.voices
@@ -309,7 +322,7 @@ export default {
               if (this.text!=""){
                   this.loading = true
                   console.log(this.text)
-                    let res = await fetch('http://pinsights-slim.eu-gb.mybluemix.net/synthesize',{
+                    let res = await fetch('http://localhost:8088/synthesize',{
                         method : 'post',
                         body : JSON.stringify( {
                             text : this.translationText,
@@ -321,7 +334,7 @@ export default {
                     })
                     .then(resp => resp.json())
                     .then(data => {
-                        this.audio = 'http://pinsights-slim.eu-gb.mybluemix.net/waves/'+data.filename
+                        this.audio = 'http://localhost:8088/waves/'+data.filename
                         window.open(this.audio,'_blank');
                         this.loading = false
                         this.$refs.player.load()
@@ -339,7 +352,7 @@ export default {
           },
       traduire : async function(){
           this.tache += 'Translation in progress \n'
-      let resp = await fetch('http://pinsights-slim.eu-gb.mybluemix.net/lt',{
+      let resp = await fetch('http://localhost:8088/lt',{
                   method : 'post',
                   body : JSON.stringify( {
                       source : this.source,
@@ -361,7 +374,7 @@ export default {
 
         Pinsights : async function(){
             this.tache += 'Personnality Insight Analysing... \n'
-            let resp = await fetch('http://pinsights-slim.eu-gb.mybluemix.net/pi',{
+            let resp = await fetch('http://localhost:8088/pi',{
                     method : 'post',
                     body : JSON.stringify( {
                         source : this.source
@@ -395,7 +408,7 @@ export default {
         },
          nluAnaluyse: async function(){
              this.tache += 'NLU in progress \n'
-            let resp = await fetch('http://pinsights-slim.eu-gb.mybluemix.net/nlu',{
+            let resp = await fetch('http://localhost:8088/nlu',{
                     method : 'post',
                     body : JSON.stringify( {
                         source : this.source
@@ -413,7 +426,7 @@ export default {
         },
         analyser: async function(){
             this.tache += 'Analysing Tones \n'
-            let resp = await fetch('http://pinsights-slim.eu-gb.mybluemix.net/toneanalyzer',{
+            let resp = await fetch('http://localhost:8088/toneanalyzer',{
                         method : 'post',
                         body : JSON.stringify( {
                             source : this.source
@@ -450,6 +463,21 @@ export default {
         }
     },
     computed : {
+        sortedEmotions(){
+            if (this.emotions){
+            return this.emotions.sort(function(a,b){
+                if (a.score > b.score) {
+                    return -1;
+                }
+                if (b.score > a.score) {
+                    return 1;
+                }
+                return 0;
+            })
+        }else{
+            return this.emotions
+        }
+        },
        nbWordStyle (){
             if (this.word_count==0){
                 return {background : '#b28efd'}
