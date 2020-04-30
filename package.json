@@ -17,7 +17,7 @@
     "d3-color": "^1.4.0",
     "d3-vs": "^1.1.1",
     "gauge-chart": "^0.5.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "vue": "^2.6.10",
     "vue-audio": "0.0.12",
     "vue-audio-recorder": "^3.0.1",
